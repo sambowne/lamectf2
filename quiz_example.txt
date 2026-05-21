@@ -1,0 +1,43 @@
+Title: Example Quiz 20 pts
+Select: 5
+Points per question: 4
+Number of Attempts: 2
+
+1 Which of the following is a compiled language?
+
+C
+Python
+JavaScript
+Ruby
+
+
+2 What does HTML stand for?
+
+HyperText Markup Language
+HighLevel Text Manipulation Language
+HyperText Management Language
+HyperLink and Text Markup Language
+
+
+3 Which protocol is used to securely transfer files over the internet?
+
+SFTP
+FTP
+HTTP
+SMTP
+
+
+4 What is the purpose of a firewall?
+
+Filter network traffic based on rules
+Encrypt data at rest
+Manage user authentication
+Speed up network connections
+
+
+5 Which command shows open network connections on Linux?
+
+netstat
+ifconfig
+ping
+traceroute
