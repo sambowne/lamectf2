@@ -251,12 +251,6 @@ foreach ($lines as $line) {
 # echo "clean_xfile finished.<br>";
 
 
-$xcsvData = file_get_contents($xfile);
-$xlines = explode(PHP_EOL, $xcsvData);
-foreach ($xlines as $line) {
-    $array[] = str_getcsv($line);
-}
-
 $csv = $array;
 
 #$csv = array_map('str_getcsv', file($logfile));
@@ -334,6 +328,20 @@ for( $i = 0; $i<$numlines; $i++ ) {
 $numwinners = count($winners);
 
 if ($verbose>0) print "Found $numwinners winners<p>";
+
+// Read extra credit totals from xfile (summed per student; all rows use label "Extra")
+$extra_totals = [];
+if (file_exists($xfile)) {
+    $fh = fopen($xfile, 'r');
+    if ($fh !== false) {
+        while (($row = fgetcsv($fh)) !== false) {
+            if (empty(trim($row[0])) || !isset($row[2])) continue;
+            $nm = trim($row[0]);
+            $extra_totals[$nm] = ($extra_totals[$nm] ?? 0) + intval($row[2]);
+        }
+        fclose($fh);
+    }
+}
 
 // Read discussion totals
 $discussion_totals_sn = [];
@@ -487,8 +495,9 @@ for( $i = 0; $i<$numwinners; $i++ ) {
   }
 
 
+  $extra_pts = $extra_totals[$winners[$i]] ?? 0;
   $disc_pts = !empty($discussions_enabled) ? ($discussion_totals_sn[$winners[$i]] ?? 0) : 0;
-  $total_pts = $scores[$i] + $disc_pts;
+  $total_pts = $scores[$i] + $extra_pts + $disc_pts;
   $sort = (string) ($total_pts + 10000);
   $n = "<td align='center'><b><big>&nbsp;" . $winners[$i] . "&nbsp;</big></b></td>";
   $s = "<td align='center'><b>&nbsp;&nbsp;&nbsp;" . (string) $total_pts . "&nbsp;&nbsp;&nbsp;</b></td>";

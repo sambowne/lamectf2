@@ -189,6 +189,8 @@ External Script Source
 | `Points per question` | Points awarded per correct answer |
 | `Number of Attempts` | How many times each student may submit (omit for unlimited) |
 
+> **Auto-discovery:** All `.txt` files uploaded to the secret directory are automatically included in the quiz list. No `config.php` edits are required — upload a file via **Manage → Quiz Files** and it appears immediately.
+
 ---
 
 ## Page Reference
