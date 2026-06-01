@@ -66,10 +66,12 @@ if (empty($results_csv))      $results_csv      = $_secret_dir . '/quiz_results.
 if (empty($access_codes_csv)) $access_codes_csv = $_secret_dir . '/nick_access.csv';
 if (empty($description))      $description      = 'CTF Course';
 if (empty($namefile))         $namefile         = $_secret_dir . '/students.csv';
-if (empty($quiz_files))       $quiz_files       = [];
-// Auto-discover uploaded quiz files (.txt) from the secret directory
-foreach (glob($_secret_dir . '/*.txt') ?: [] as $_qf) {
-    if (!in_array($_qf, $quiz_files, true)) $quiz_files[] = $_qf;
+if (empty($quiz_files)) {
+    // Auto-discover uploaded quiz files (.txt) from the secret directory
+    $quiz_files = [];
+    foreach (glob($_secret_dir . '/*.txt') ?: [] as $_qf) {
+        $quiz_files[] = $_qf;
+    }
 }
 
 // ── Per-class derived paths ──────────────────────────────────────────────────

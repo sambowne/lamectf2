@@ -95,6 +95,11 @@ foreach (glob($secret_dir . '/*.txt') ?: [] as $f) {
     <?php endforeach; ?>
   </ul>
   <?php endif; ?>
+  <p><small><strong>Note:</strong> By default, all <code>.txt</code> files in <code><?php echo h($secret_dir); ?></code>
+  are shown to students — including files uploaded for other courses. To restrict this course to specific quizzes,
+  add a <code>$quiz_files</code> array to <code><?php echo h($secret_dir . '/' . ($course_number ?? '') . '_secret.php'); ?></code>, for example:<br>
+  <code>$quiz_files = ['<?php echo h($secret_dir); ?>/Quiz01_EH_F26.txt', '<?php echo h($secret_dir); ?>/Quiz02_EH_F26.txt'];</code><br>
+  When <code>$quiz_files</code> is set there, auto-discovery is skipped and only those files appear.</small></p>
 </div>
 
 <div class="box">
