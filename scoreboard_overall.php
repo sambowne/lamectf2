@@ -3,6 +3,9 @@ include 'config.php';
 
 function h($s) { return htmlspecialchars($s, ENT_QUOTES); }
 
+$seconds = max(5, intval($_GET['seconds'] ?? 10));
+$refresh = isset($_GET['refresh']) ? "<meta http-equiv='refresh' content='{$seconds}'>" : '';
+
 function read_csv_file($path) {
     if (!file_exists($path)) return [];
     $lines = explode(PHP_EOL, file_get_contents($path));
@@ -105,6 +108,7 @@ usort($rows, function($a, $b) { return $b['total'] - $a['total']; });
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<?php echo $refresh; ?>
 <title>Overall Scoreboard</title>
 <style>
   body { font-family: Arial, sans-serif; max-width: 700px; margin: 30px auto; padding: 0 20px; }
