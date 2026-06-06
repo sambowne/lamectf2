@@ -109,6 +109,7 @@ foreach (glob($secret_dir . '/*.txt') ?: [] as $f) {
 Select: 2
 Points per question: 4
 Number of Attempts: 2
+Instructions: Read each question carefully. Use the textbook if needed. <a href="https://example.com">Reference</a>
 
 1 Which of the following is a compiled language?
 
@@ -124,7 +125,8 @@ HighLevel Text Manipulation Language
 HyperText Management Language
 HyperLink and Text Markup Language</pre>
   <p><small><code>Select: 2</code> — pick 2 questions at random per attempt &nbsp;|&nbsp;
-     <code>Number of Attempts: 2</code> — each student may submit twice</small></p>
+     <code>Number of Attempts: 2</code> — each student may submit twice &nbsp;|&nbsp;
+     <code>Instructions:</code> — optional; displayed above the quiz and may contain HTML (e.g. <code>&lt;a href&gt;</code> links)</small></p>
   <form method="post" enctype="multipart/form-data" action="quiz_upload.php<?php echo h($nav_c); ?>">
     <?php echo csrf_field(); ?>
     <label for="quiz_files">Select quiz file(s) (.txt):</label>

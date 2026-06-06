@@ -118,6 +118,7 @@ $nav_qs      = '';
   .group-incorrect h3 { color: red;   margin: 0 0 12px; }
   .color-legend { font-size: 0.88em; margin: 6px 0 10px; color: #555; }
   .score-box { background: #e8f4e8; border: 1px solid #4a4; padding: 16px; border-radius: 6px; margin: 16px 0; }
+  .quiz-instructions { background: #f0f4ff; border: 1px solid #99b; padding: 12px 16px; border-radius: 6px; margin: 10px 0 18px; }
   .error { background: #fdd; border: 1px solid #c00; padding: 10px; border-radius: 4px; margin: 12px 0; }
   input[type=submit] { padding: 10px 24px; font-size: 1em; cursor: pointer; }
   input[type=text] { padding: 6px; font-size: 1em; }
@@ -301,6 +302,9 @@ $_SESSION[$_qsk] = $_quiz_state;
 
 echo '<h2>' . h($title) . '</h2>';
 echo '<p>Student: <strong>' . h($nickname) . '</strong></p>';
+if (!empty($meta['Instructions'])) {
+    echo '<div class="quiz-instructions">' . $meta['Instructions'] . '</div>';
+}
 echo '<p>Answer all questions and click Submit.</p>';
 echo '<form method="post">';
 echo '<input type="hidden" name="c" value="' . htmlspecialchars($course_number ?? '', ENT_QUOTES) . '">';
