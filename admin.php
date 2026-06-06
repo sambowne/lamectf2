@@ -183,6 +183,7 @@ if (!$authed && isset($_POST['submit_login'])) {
   <?php if (!empty($discussions_enabled)): ?>
   <a href="discussions.php<?php echo htmlspecialchars($nav_c, ENT_QUOTES); ?>">Discussion Scores</a>
   <?php endif; ?>
+  <a href="nick_access.php<?php echo htmlspecialchars($nav_c, ENT_QUOTES); ?>">Nicknames &amp; Access Codes</a>
   <a href="quiz_upload.php<?php echo htmlspecialchars($nav_c, ENT_QUOTES); ?>">Quiz Files</a>
   <a href="init.php?new=1">Add Another Class</a>
 </div>
