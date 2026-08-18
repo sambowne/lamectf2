@@ -79,6 +79,7 @@ $_prefix             = !empty($course_number) ? $course_number . '_' : '';
 $discussions_csv     = $_secret_dir . '/' . $_prefix . 'discussions.csv';
 $discussions_enabled = file_exists($_secret_dir . '/' . $_prefix . 'discussions_enabled');
 $ask_section         = !file_exists($_secret_dir . '/' . $_prefix . 'no_section');
+$open_ctf            = file_exists($_secret_dir . '/' . $_prefix . 'open_ctf');
 $grades_csv          = $_secret_dir . '/' . $_prefix . 'grades.csv';
 
 // Backup settings — global (shared across all classes)

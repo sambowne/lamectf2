@@ -18,7 +18,7 @@ if (session_status() === PHP_SESSION_ACTIVE && !empty($course_number)) {
   <?php echo $_nav_student; ?>
   <a href="scoreboard_overall.php<?php echo $_nc; ?>"><b>Class Scoreboard</b></a> &nbsp;|&nbsp;
   <a href="scoreboard_with_quizzes.php<?php echo $_nc; ?>">My Scores</a> &nbsp;|&nbsp;
-  <a href="index.php<?php echo $_nc; ?>">Submit Flags</a> &nbsp;|&nbsp;
-  <a href="quiz.php<?php echo $_nc; ?>">Take a Quiz</a><?php if (!empty($projects_url)): ?> &nbsp;|&nbsp;
+  <a href="index.php<?php echo $_nc; ?>">Submit Flags</a><?php if (!($open_ctf ?? false)): ?> &nbsp;|&nbsp;
+  <a href="quiz.php<?php echo $_nc; ?>">Take a Quiz</a><?php endif; ?><?php if (!empty($projects_url)): ?> &nbsp;|&nbsp;
   <a href="<?php echo htmlspecialchars($projects_url, ENT_QUOTES); ?>">Projects</a><?php endif; ?>
 </nav>

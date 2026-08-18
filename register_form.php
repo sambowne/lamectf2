@@ -21,6 +21,7 @@ small.hint { color: #555; display: block; margin-top: 3px; }
 <tr><td><big><b>Nickname:</b></big></td>
   <td><input type='text' name='nickname' size='45' minlength="2" required></td></tr>
 
+<?php if (!($open_ctf ?? false)): ?>
 <tr><td><big><b>Last Name:</b></big></td>
   <td><input type='text' name='lastname' size='45' minlength="2" required></td></tr>
 
@@ -41,6 +42,7 @@ small.hint { color: #555; display: block; margin-top: 3px; }
     <button type='button' class='regen' onclick='generateCode()'>New Code</button>
     <small class='hint'>You will use this code to take quizzes. Write it down.</small>
   </td></tr>
+<?php endif; ?>
 
 <tr><td colspan=2 align='center'><big><b>
 <input type='submit' value='Register'>
@@ -50,6 +52,7 @@ small.hint { color: #555; display: block; margin-top: 3px; }
 </blockquote>
 </form>
 
+<?php if (!($open_ctf ?? false)): ?>
 <script>
 var words = [
   'apple','ocean','forest','river','thunder','silver','golden','crystal',
@@ -63,6 +66,7 @@ function generateCode() {
 }
 generateCode();
 </script>
+<?php endif; ?>
 
 </body>
 </html>

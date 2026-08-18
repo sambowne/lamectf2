@@ -3,6 +3,17 @@ session_start();
 require __DIR__ . '/csrf.php';
 include 'config.php';
 
+function nick_exists($nickname, $namefile) {
+    if ($nickname === '' || !file_exists($namefile)) return false;
+    $fh = fopen($namefile, 'r');
+    if ($fh === false) return false;
+    while (($row = fgetcsv($fh)) !== false) {
+        if (trim($row[0]) === $nickname) { fclose($fh); return true; }
+    }
+    fclose($fh);
+    return false;
+}
+
 function validate_login($nickname, $code, $csv_path) {
     if ($nickname === '' || $code === '') return false;
     if (!file_exists($csv_path)) return false;
@@ -53,14 +64,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     if (!$captcha_ok) {
         $error = 'CAPTCHA rejected. Please try again.';
-    } elseif (validate_login($nick, $code, $access_codes_csv)) {
+    } elseif (($open_ctf ?? false) && nick_exists($nick, $namefile)) {
+        $_SESSION[$_k_nick] = $nick;
+        session_regenerate_id(true);
+        header('Location: index.php' . $nav_c);
+        exit;
+    } elseif (!($open_ctf ?? false) && validate_login($nick, $code, $access_codes_csv)) {
         $_SESSION[$_k_nick] = $nick;
         $_SESSION[$_k_code] = $code;
         session_regenerate_id(true);
         header('Location: index.php' . $nav_c);
         exit;
     } elseif ($captcha_ok) {
-        $error = 'Invalid nickname or access code.';
+        $error = ($open_ctf ?? false) ? 'Nickname not found.' : 'Invalid nickname or access code.';
     }
 }
 
@@ -104,8 +120,10 @@ $has_students = file_exists($namefile) && filesize($namefile) > 0;
       if ($fh) fclose($fh);
       ?>
     </select>
+    <?php if (!($open_ctf ?? false)): ?>
     <label for="code">Access Code:</label>
     <input type="text" name="code" id="code" placeholder="e.g. open_apple" autocomplete="off" required>
+    <?php endif; ?>
     <?php if (!empty($recaptcha_sitekey)): ?>
     <div style="margin-top:12px">
       <div class="g-recaptcha" data-sitekey="<?php echo htmlspecialchars($recaptcha_sitekey); ?>" data-action="LOGIN"></div>

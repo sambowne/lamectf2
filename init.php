@@ -173,6 +173,8 @@ if ($mode === 'manage') {
     $discussions_enabled = file_exists($secret_dir . '/' . $_init_prefix . 'discussions_enabled');
     // Section/CRN field state (on by default — flag file disables it)
     $section_enabled = !file_exists($secret_dir . '/' . $_init_prefix . 'no_section');
+    // Open CTF mode (no access codes, no quizzes, nickname-only registration)
+    $open_ctf_enabled = file_exists($secret_dir . '/' . $_init_prefix . 'open_ctf');
 
     // CTF answers are shared across all classes
     $ctf_answers_exists = file_exists($secret_dir . '/CTF_answers.php');
@@ -267,6 +269,15 @@ if ($mode === 'manage') {
                 touch($flag); chmod($flag, 0600); $section_enabled = false; $upload_ok[] = 'Section/CRN field disabled.';
             } else {
                 unlink($flag); $section_enabled = true; $upload_ok[] = 'Section/CRN field enabled.';
+            }
+        }
+
+        if (isset($_POST['toggle_open_ctf'])) {
+            $flag = $secret_dir . '/' . $_init_prefix . 'open_ctf';
+            if ($open_ctf_enabled) {
+                unlink($flag); $open_ctf_enabled = false; $upload_ok[] = 'Open CTF mode disabled.';
+            } else {
+                touch($flag); chmod($flag, 0600); $open_ctf_enabled = true; $upload_ok[] = 'Open CTF mode enabled.';
             }
         }
 
@@ -663,6 +674,24 @@ $poss_chals = [
   <form method="post" <?php echo _c_action_s($managing_course,'section-section'); ?>>
     <?php echo csrf_field(); echo $_c_hidden; ?>
     <input type="submit" name="toggle_section" value="Enable Section Field">
+  </form>
+  <?php endif; ?>
+</div>
+
+<div class="box" id="section-open-ctf">
+  <h2>Open CTF Mode</h2>
+  <p>When enabled: registration asks for nickname only (no name, ID, or access code), login requires only a nickname, and quizzes are hidden.</p>
+  <?php if ($open_ctf_enabled): ?>
+  <p><strong style="color:green">&#10003; Open CTF: ON</strong> — nickname-only registration, no quizzes.</p>
+  <form method="post" <?php echo _c_action_s($managing_course,'section-open-ctf'); ?>>
+    <?php echo csrf_field(); echo $_c_hidden; ?>
+    <input type="submit" name="toggle_open_ctf" value="Disable Open CTF Mode">
+  </form>
+  <?php else: ?>
+  <p><strong style="color:#999">Open CTF: OFF</strong> — standard registration with access codes.</p>
+  <form method="post" <?php echo _c_action_s($managing_course,'section-open-ctf'); ?>>
+    <?php echo csrf_field(); echo $_c_hidden; ?>
+    <input type="submit" name="toggle_open_ctf" value="Enable Open CTF Mode">
   </form>
   <?php endif; ?>
 </div>

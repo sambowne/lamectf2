@@ -11,14 +11,24 @@ $id          = trim($_REQUEST['id']         ?? '');
 $section     = trim($_REQUEST['crn']        ?? '');
 $access_code = trim($_REQUEST['access_code'] ?? '');
 
-if ($nickname    === '') { die('<h3>Error: nickname is required.</h3>'); }
-if ($lastname    === '') { die('<h3>Error: last name is required.</h3>'); }
-if ($firstname   === '') { die('<h3>Error: first name is required.</h3>'); }
-if ($id          === '') { die('<h3>Error: student ID is required.</h3>'); }
-if ($access_code === '') { die('<h3>Error: access code is required.</h3>'); }
+if ($nickname === '') { die('<h3>Error: nickname is required.</h3>'); }
 
-// Store name as "Last, First" so alphabetical sorting works correctly
-$name = $lastname . ', ' . $firstname;
+if ($open_ctf ?? false) {
+    // Open CTF: no real name/ID/code needed — generate a silent access code for login
+    $name        = $nickname;
+    $id          = '';
+    $section     = '';
+    $words       = ['apple','ocean','forest','river','thunder','silver','golden','crystal',
+                    'swift','brave','cedar','maple','falcon','arrow','ember','glacier'];
+    $access_code = $words[array_rand($words)] . '_' . $words[array_rand($words)] . '_' . rand(100,999);
+} else {
+    if ($lastname    === '') { die('<h3>Error: last name is required.</h3>'); }
+    if ($firstname   === '') { die('<h3>Error: first name is required.</h3>'); }
+    if ($id          === '') { die('<h3>Error: student ID is required.</h3>'); }
+    if ($access_code === '') { die('<h3>Error: access code is required.</h3>'); }
+    // Store name as "Last, First" so alphabetical sorting works correctly
+    $name = $lastname . ', ' . $firstname;
+}
 
 if (!isset($namefile)) {
     die('<h3>Error: namefile not set in config.php</h3>');
@@ -60,8 +70,10 @@ fclose($afile);
 
 echo "<h2 align='center'>" . htmlspecialchars(strip_tags($description), ENT_QUOTES) . "</h2>";
 echo "<h2>Registration successful!</h2>";
-echo "<p>Nickname: <b>" . htmlspecialchars($nickname) . "</b><br>";
-echo "Name: <b>" . htmlspecialchars($name) . "</b><br>";
-echo "Access code: <b>" . htmlspecialchars($access_code) . "</b> — write this down, you will need it for quizzes.</p>";
+echo "<p>Nickname: <b>" . htmlspecialchars($nickname) . "</b></p>";
+if (!($open_ctf ?? false)) {
+    echo "<p>Name: <b>" . htmlspecialchars($name) . "</b><br>";
+    echo "Access code: <b>" . htmlspecialchars($access_code) . "</b> — write this down, you will need it for quizzes.</p>";
+}
 echo "<p><a href='login.php" . htmlspecialchars($nav_c, ENT_QUOTES) . "&registered=1'><strong>Log in now &rarr;</strong></a></p>";
 ?>
